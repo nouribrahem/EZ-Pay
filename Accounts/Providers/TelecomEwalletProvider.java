@@ -1,4 +1,5 @@
 package Accounts.Providers;
 
-public class TelecomEwalletProvider {
+public class TelecomEwalletProvider extends EwalletProvider{
+
 }

@@ -1,4 +1,4 @@
 package Accounts.Providers;
 
-public class EPaymentEwalletProvider {
+public class EPaymentEwalletProvider extends EwalletProvider{
 }

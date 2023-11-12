@@ -1,4 +1,5 @@
 package Accounts;
 
-public class EwalletAccount {
+public class EwalletAccount extends Account{
+
 }

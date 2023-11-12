@@ -1,4 +1,4 @@
 package Accounts.Providers;
 
-public class BankProvider {
+public class BankProvider extends Provider{
 }
