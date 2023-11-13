@@ -30,4 +30,8 @@ public class User {
     public void setInstaPayAccount(InstaPayAccount instaPayAccount) {
         this.instaPayAccount = instaPayAccount;
     }
+    public static void main(String[] args) {
+        System.out.println("Hello world!");
+    }
+
 }
