@@ -2,7 +2,9 @@ package Authentication.SignUp;
 
 import Accounts.Account;
 import Accounts.BankAccount;
+import Accounts.Providers.BankAccountProvider;
 import Accounts.Providers.BankProvider;
+import Accounts.Providers.QNBBank;
 
 import java.util.Scanner;
 
@@ -32,8 +34,9 @@ public abstract class BankSignUp extends SignUp{
         }
         else account.setBankNumber(bankNumber);
 
-        BankProvider provider = new BankProvider();
-        boolean verify = provider.verifyAccount(account);
+        BankAccountProvider provider = new QNBBank();
+
+        boolean verify = account.getProvider().verifyAccount();
         if(verify){
             otp.sendOTP(number);
             System.out.println("Please enter the otp number.");

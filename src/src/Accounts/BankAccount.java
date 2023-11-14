@@ -1,5 +1,7 @@
 package Accounts;
 
+import Accounts.Providers.AccountProvider;
+
 import java.security.Provider;
 
 public class BankAccount extends Account{
@@ -9,7 +11,7 @@ public class BankAccount extends Account{
         this.bankNumber = bankNumber;
     }
 
-    BankAccount(Provider provider) {
+    BankAccount(AccountProvider provider) {
         super(provider);
     }
 }

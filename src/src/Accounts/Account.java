@@ -1,13 +1,15 @@
 package Accounts;
 
+import Accounts.Providers.AccountProvider;
+
 import java.security.Provider;
 
 public class Account {
     private Double balance;
     private String mobileNumber;
-    private Provider provider;
+    private AccountProvider provider;
 
-    Account(Provider provider){
+    Account(AccountProvider provider){
         this.provider = provider;
     }
 
@@ -27,11 +29,11 @@ public class Account {
         this.mobileNumber = mobileNumber;
     }
 
-    public Provider getProvider() {
+    public AccountProvider getProvider() {
         return provider;
     }
 
-    public void setProvider(Provider provider) {
+    public void setProvider(AccountProvider provider) {
         this.provider = provider;
     }
 }
