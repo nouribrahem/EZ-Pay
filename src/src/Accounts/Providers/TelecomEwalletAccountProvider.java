@@ -1,6 +1,6 @@
 package Accounts.Providers;
 
-public class BankProvider extends AccountProvider{
+public class TelecomEwalletAccountProvider extends EwalletAccountProvider {
 
     @Override
     public Boolean verifyAccount() {
@@ -11,4 +11,5 @@ public class BankProvider extends AccountProvider{
     public Double getAccountBalance() {
         return null;
     }
+
 }
