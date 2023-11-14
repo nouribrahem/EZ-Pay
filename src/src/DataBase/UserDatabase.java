@@ -4,6 +4,6 @@ import UserManagement.User;
 
 import java.util.List;
 
-public class DatabaseManager {
+public class UserDatabase {
     private List<User> users;
 }

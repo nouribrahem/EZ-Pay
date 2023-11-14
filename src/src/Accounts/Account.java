@@ -7,6 +7,10 @@ public class Account {
     private String mobileNumber;
     private Provider provider;
 
+    Account(Provider provider){
+        this.provider = provider;
+    }
+
     public Double getBalance() {
         return balance;
     }
