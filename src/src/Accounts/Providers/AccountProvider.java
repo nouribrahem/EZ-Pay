@@ -7,4 +7,7 @@ public abstract class AccountProvider {
         System.out.println("Hello world!");
     }
 
+    public Boolean updateAccountBalance(double amount) {
+        return true;
+    }
 }
