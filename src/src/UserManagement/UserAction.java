@@ -5,7 +5,7 @@ import DataBase.DatabaseManager;
 import java.util.Scanner;
 
 public class UserAction {
-    private User currentUser;
+    private static User currentUser;
     private DatabaseManager databaseManager;
 
     //userSignOptions
@@ -33,7 +33,7 @@ public class UserAction {
         }
     }
 
-    public void displayUser(){
+    public static void displayUser(){
         System.out.println("Welcome ,"+currentUser.getUserName()+"!");
         System.out.println("Current Balance: "+ currentUser.getInstaPayAccount().getAccount().getBalance());
     }
