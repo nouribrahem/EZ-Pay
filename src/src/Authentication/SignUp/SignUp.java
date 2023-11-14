@@ -1,11 +1,8 @@
 package Authentication.SignUp;
 
-import Accounts.Providers.Provider;
-import DataBase.DatabaseManager;
+;
+import DataBase.UserDatabase;
 import UserManagement.User;
-import UserManagement.UserAction;
-
-import java.util.Objects;
 import java.util.Scanner;
 
 public abstract class SignUp {
@@ -27,7 +24,8 @@ public abstract class SignUp {
         Scanner in = new Scanner(System.in);
         System.out.println("Please enter the user Name you want:");
         String userName = in.nextLine();
-        if(!DatabaseManager.search(userName)){
+        UserDatabase userDatabase = new UserDatabase();
+        if(!userDatabase.search(userName)){
             System.out.println("valid username");
             user.setUserName(userName);
             System.out.println("Please enter the password:");

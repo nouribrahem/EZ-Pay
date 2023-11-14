@@ -1,19 +1,17 @@
 package Authentication;
 import Authentication.SignUp.SignUp;
 
-import DataBase.DatabaseManager;
+import DataBase.UserDatabase;
 import UserManagement.User;
-import UserManagement.UserAction;
-
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class Authentication {
     private SignUp signUp;
     private User user;
 
-
     public boolean signIn(String username, String password){
+        UserDatabase userDatabase = new UserDatabase();
+
         System.out.println("Please enter your username");
         Scanner scanner = new Scanner(System.in);
         username = scanner.nextLine();
@@ -23,7 +21,7 @@ public class Authentication {
         password = scanner.nextLine();
         user.setPassword(password);
 
-        if(DatabaseManager.searchSignin(username, password)){
+        if(userDatabase.searchSignin(username, password)){
             System.out.println("Login successful");
             user = getSigninUser();
             return true;

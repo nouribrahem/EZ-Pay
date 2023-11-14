@@ -3,7 +3,6 @@ package Authentication.SignUp;
 import Accounts.Account;
 import Accounts.BankAccount;
 import Accounts.Providers.BankAccountProvider;
-import Accounts.Providers.BankProvider;
 import Accounts.Providers.QNBBank;
 
 import java.util.Scanner;
@@ -16,7 +15,10 @@ public abstract class BankSignUp extends SignUp{
     }
 
     public boolean createAccount(){
-        BankAccount account = new BankAccount();
+        BankAccountProvider provider = new QNBBank();
+        //TODO(add input to create type of provider)
+
+        BankAccount account = new BankAccount(provider);
 
         Scanner in = new Scanner(System.in);
 
@@ -34,7 +36,6 @@ public abstract class BankSignUp extends SignUp{
         }
         else account.setBankNumber(bankNumber);
 
-        BankAccountProvider provider = new QNBBank();
 
         boolean verify = account.getProvider().verifyAccount();
         if(verify){
@@ -55,9 +56,9 @@ public abstract class BankSignUp extends SignUp{
     }
 
     public static void main(String[] args){
-        BankAccount account = new BankAccount();
-        account.setBankNumber("123");
-        account.setMobileNumber("0123");
+//        BankAccount account = new BankAccount();
+//        account.setBankNumber("123");
+//        account.setMobileNumber("0123");
 
     }
 }
