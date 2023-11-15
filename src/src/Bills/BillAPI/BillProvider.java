@@ -9,7 +9,7 @@ public class BillProvider {
 
 //    private BillReceipt receipt;
 
-    private HashMap<String, BillReceipt> storedReceipts;
+    private HashMap<String, BillReceipt> storedReceipts = new HashMap<String, BillReceipt>();
     public BillProvider() {
         BillReceipt r1 = new BillReceipt();
         r1.setAmount(145);
@@ -63,6 +63,15 @@ public class BillProvider {
 //    public void setReceipt(BillReceipt receipt) {
 //        this.receipt = receipt;
 //    }
+
+
+    public HashMap<String, BillReceipt> getStoredReceipts() {
+        return storedReceipts;
+    }
+
+    public void setStoredReceipts(HashMap<String, BillReceipt> storedReceipts) {
+        this.storedReceipts = storedReceipts;
+    }
 
     public BillReceipt getBillReceipt(UtilityData data) {
         return storedReceipts.get(data.getSubscriptionNumber());

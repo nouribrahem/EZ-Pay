@@ -51,7 +51,7 @@ public class UserAction {
         int choice;
         do {
             System.out.println("""
-            Please choose operation number:
+            \nPlease choose operation number:\n
             1. Transfer to bank account.
             2. Transfer to eWallet account.
             3. Transfer to instapay account.
@@ -85,7 +85,7 @@ public class UserAction {
     }
 
     public void displayUser(){
-        System.out.println("Welcome, "+currentUser.getUserName()+"!");
+        System.out.println("\nWelcome, "+currentUser.getUserName()+"!");
         System.out.println("Current Balance: "+ currentUser.getInstaPayAccount().getAccount().getBalance());
     }
     public int displayBankProvidersOptions(){
@@ -310,15 +310,15 @@ public class UserAction {
 
     public void payGasBill(){
         billPayment = new GasBillPayment();
-        billPayment.payBill(currentUser.getInstaPayAccount().getAccount());
+        billPayment.billOptions(currentUser);
     }
     public void payWaterBill(){
         billPayment = new WaterBillPayment();
-        billPayment.payBill(currentUser.getInstaPayAccount().getAccount());
+        billPayment.billOptions(currentUser);
     }
     public void payElectricityBill(){
         billPayment = new ElectricityBillPayment();
-        billPayment.payBill(currentUser.getInstaPayAccount().getAccount());
+        billPayment.billOptions(currentUser);
     }
     public void runSignUser(){
         while(true){
