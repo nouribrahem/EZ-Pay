@@ -61,6 +61,7 @@ public class BankSignUp extends SignUp {
         account.setBankNumber(bankNumber);
 
 
+
         boolean verify = account.getProvider().verifyAccount(account);
         System.out.println(verify);
         if (verify) {
@@ -71,7 +72,10 @@ public class BankSignUp extends SignUp {
                 System.out.println("The OTP number you have entered is not correct, try again.");
                 OTPNumber = in.next();
             }
-            this.instapayAccount.setAccount(account);
+            account.setBalance(account.getProvider().getAccountBalance(account));
+
+            this.instapayAccount = new InstaPayAccount(account);
+
 
             System.out.println("The bank created successfully");
             return true;

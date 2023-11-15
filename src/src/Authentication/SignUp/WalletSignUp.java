@@ -55,7 +55,7 @@ public class WalletSignUp extends SignUp {
         }
         ewalletAccount.setMobileNumber(number);
 
-        boolean verify = instapayAccount.getAccount().getProvider().verifyAccount(instapayAccount.getAccount());
+        boolean verify = ewalletAccount.getProvider().verifyAccount(ewalletAccount);
         if (verify) {
             otp.sendOTP(number);
             System.out.println("Please enter the otp number.");
@@ -64,8 +64,11 @@ public class WalletSignUp extends SignUp {
                 System.out.println("The OTP number you have entered is not correct, try again.");
                 OTPNumber = in.next();
             }
-            this.instapayAccount.setAccount(ewalletAccount);
+            ewalletAccount.setBalance(ewalletAccount.getProvider().getAccountBalance(ewalletAccount));
 
+            this.instapayAccount = new InstaPayAccount(ewalletAccount);
+            System.out.println("The wallet created successfully");
+            return true;
         } else {
             System.out.println("The bank cannot be verified");
         }

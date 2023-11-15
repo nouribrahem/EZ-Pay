@@ -17,7 +17,6 @@ public abstract class SignUp {
     }
 
     public boolean signUp() {
-
         return createAccount() && getUserData();
     }
 

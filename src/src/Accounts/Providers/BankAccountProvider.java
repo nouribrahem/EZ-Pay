@@ -5,6 +5,7 @@ import Accounts.BankAccount;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class BankAccountProvider extends AccountProvider {
@@ -58,8 +59,9 @@ public class BankAccountProvider extends AccountProvider {
     @Override
     public Boolean updateAccountBalance(Account account, double amount) {
         if(verifyAccount(account)){
-            for(Account a : BankRegisteredAccounts){
-                if(account == a){
+            for(BankAccount a : BankRegisteredAccounts){
+                if(Objects.equals(((BankAccount) account).getBankNumber(), a.getBankNumber())){
+                    System.out.println("Amount is " + amount);
                     a.setBalance(a.getBalance()+amount);
                     break;
                 }

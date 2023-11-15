@@ -6,6 +6,7 @@ import Accounts.EwalletAccount;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class EwalletAccountProvider extends AccountProvider {
@@ -13,10 +14,8 @@ public class EwalletAccountProvider extends AccountProvider {
     @Override
     public Account search(Account account) {
         for(EwalletAccount a:EwalletRegisteredAccounts){
-            if(account instanceof EwalletAccount){
-            if( ((EwalletAccount)account).getMobileNumber()==a.getMobileNumber()){
+            if(Objects.equals(((EwalletAccount) account).getMobileNumber(), a.getMobileNumber())){
                 return a;
-            }
             }
         }
         return null;
@@ -43,8 +42,8 @@ public class EwalletAccountProvider extends AccountProvider {
     }
     public Boolean updateAccountBalance(Account account, double amount) {
         if(verifyAccount(account)){
-            for(Account a : EwalletRegisteredAccounts){
-                if(account == a){
+            for(EwalletAccount a : EwalletRegisteredAccounts){
+                if(Objects.equals(account.getMobileNumber(), a.getMobileNumber())){
                     a.setBalance(a.getBalance()+amount);
                     break;
                 }

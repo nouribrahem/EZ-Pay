@@ -7,6 +7,7 @@ import UserManagement.User;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class UserDatabase {
     private final List<User> users;
@@ -78,9 +79,9 @@ public class UserDatabase {
     }
     public void updateUserBalance(User user){
         for (User u : users) {
-            if (u == user){
+            if (Objects.equals(u.getUserName(), user.getUserName())){
                 Account account =  u.getInstaPayAccount().getAccount();
-                account.setBalance(account.getBalance());
+                account.setBalance(account.getProvider().getAccountBalance(account));
                 u.getInstaPayAccount().setAccount(account);
                 break;
             }

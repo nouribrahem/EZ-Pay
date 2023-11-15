@@ -9,7 +9,7 @@ public class BillProvider {
 
 //    private BillReceipt receipt;
 
-    private HashMap<String, BillReceipt> storedReceipts = new HashMap<String, BillReceipt>();
+    private HashMap<String, BillReceipt> storedReceipts = new HashMap<>();
     public BillProvider() {
         BillReceipt r1 = new BillReceipt();
         r1.setAmount(145);

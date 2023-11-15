@@ -50,7 +50,7 @@ public class Transaction {
         transferStrategy = strategy;
     }
     public Boolean doTransfer(Account recievingAccount, Account sendingAccount, double amount){
-        return transferStrategy.transfer(sendingAccount,recievingAccount,amount);
+        return transferStrategy.transfer(recievingAccount,sendingAccount,amount);
     }
     public Transaction makeTransaction(Account recievingAccount, Account sendingAccount, double amount){
         setDateTime();
