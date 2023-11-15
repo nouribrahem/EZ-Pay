@@ -38,7 +38,7 @@ public abstract class SignUp {
                 user.setPassword(password);
                 //TODO the account attribute has be correctly set
                 user.setInstaPayAccount(instapayAccount);
-//                UserAction.displayUser();
+//                userDatabase.addUser(user);
                 return true;
             }
             else{

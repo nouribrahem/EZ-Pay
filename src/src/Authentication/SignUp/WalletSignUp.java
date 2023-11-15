@@ -48,22 +48,23 @@ public class WalletSignUp extends SignUp {
 
         System.out.println("Please enter your mobile number.");
         String number = in.next();
-        if(!number.matches("\\d+")){
-            System.out.println("The mobile number must contain only digits [0-9].");
+        while (!number.matches("0(10|11|12)\\d{8}")) {
+            System.out.println("The mobile number must be 11 digit and start with 010 | 011 | 012.");
+            number = in.next();
+
         }
-        else ewalletAccount.setMobileNumber(number);
+        ewalletAccount.setMobileNumber(number);
 
         boolean verify = instapayAccount.getAccount().getProvider().verifyAccount(instapayAccount.getAccount());
         if (verify) {
             otp.sendOTP(number);
             System.out.println("Please enter the otp number.");
             String OTPNumber = in.next();
-            if (otp.verifyOTP(OTPNumber)) {
-                this.instapayAccount.setAccount(ewalletAccount);
-                return true;
-            } else {
-                System.out.println("The OTP number you have entered is not correct.");
+            while (!otp.verifyOTP(OTPNumber)) {
+                System.out.println("The OTP number you have entered is not correct, try again.");
+                OTPNumber = in.next();
             }
+            this.instapayAccount.setAccount(ewalletAccount);
 
         } else {
             System.out.println("The bank cannot be verified");

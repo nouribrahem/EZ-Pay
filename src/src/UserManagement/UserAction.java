@@ -157,13 +157,15 @@ public class UserAction {
         return ewalletAccount;
     }
     private String inputUsername() {
+        Scanner in = new Scanner(System.in);
         System.out.println("Please enter your username");
-        return scanner.nextLine();
+        return in.nextLine();
     }
 
     private String inputPassword() {
+        Scanner in = new Scanner(System.in);
         System.out.println("Please enter your password");
-        return scanner.nextLine();
+        return in.nextLine();
     }
     private double inputAmount() {
         System.out.println("Please enter amount of money to transfer");
@@ -396,11 +398,12 @@ public class UserAction {
 
     public static void main(String[] args) {
         UserAction userAction = new UserAction();
-        User user = new User();
-        user.setUserName("Rawanyounis");
-        user.setInstaPayAccount(new InstaPayAccount(new BankAccount(new CIBBank())));
-        user.getInstaPayAccount().getAccount().setBalance(344.6);
-        userAction.setCurrentUser(user);
+//        User user = new User();
+//        user.setUserName("Rawanyounis");
+//        user.setInstaPayAccount(new InstaPayAccount(new BankAccount(new CIBBank())));
+//        user.getInstaPayAccount().getAccount().setBalance(344.6);
+//        userAction.setCurrentUser(user);
+        userAction.runSignUser();
         userAction.runApplication();
 //        userAction.transferToBankAccount();
     }

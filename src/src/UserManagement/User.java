@@ -6,6 +6,8 @@ public class User {
     private String userName;
     private String password;
     private InstaPayAccount instaPayAccount;
+    ;
+
 
     public String getUserName() {
         return userName;
