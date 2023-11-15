@@ -9,9 +9,11 @@ import UserManagement.User;
 import java.util.Objects;
 import java.util.Scanner;
 
-import static java.lang.Character.isDigit;
 
 public abstract class BankSignUp extends SignUp {
+
+public class BankSignUp extends SignUp{
+
     public BankSignUp() {
         super(new OTPManager());
     }
@@ -59,6 +61,10 @@ public abstract class BankSignUp extends SignUp {
 
         boolean verify = account.getProvider().verifyAccount();
         if (verify) {
+
+        boolean verify = account.getProvider().verifyAccount(account);
+        if(verify){
+
             otp.sendOTP(number);
             System.out.println("Please enter the otp number.");
             String OTPNumber = in.next();

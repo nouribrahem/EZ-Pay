@@ -1,8 +1,7 @@
 package Authentication.SignUp;
-
-;
 import Accounts.Account;
 import Accounts.InstaPayAccount;
+
 import DataBase.UserDatabase;
 import UserManagement.User;
 import java.util.Scanner;

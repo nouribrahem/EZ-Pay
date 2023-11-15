@@ -9,9 +9,9 @@ import Accounts.Providers.*;
 import java.util.Objects;
 import java.util.Scanner;
 
-public abstract class WalletSignUp extends SignUp{
-    public WalletSignUp(OTPManager otp) {
-        super(otp);
+public class WalletSignUp extends SignUp{
+    public WalletSignUp() {
+        super(new OTPManager());
     }
 
     public  boolean createAccount(){
