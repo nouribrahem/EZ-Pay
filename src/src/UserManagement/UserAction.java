@@ -3,6 +3,7 @@ package UserManagement;
 import Accounts.Account;
 import Accounts.BankAccount;
 import Accounts.EwalletAccount;
+import Accounts.InstaPayAccount;
 import Accounts.Providers.*;
 import Authentication.SignUp.BankSignUp;
 import Authentication.SignUp.WalletSignUp;
@@ -29,6 +30,9 @@ public class UserAction {
         userDatabase = new UserDatabase();
         transactionDatabase = new TransactionDatabase();
         billPayment = new BillPayment();
+    }
+    void setCurrentUser(User u){
+        currentUser = u;
     }
     Scanner scanner = new Scanner(System.in);
     public int displaySignMenu(){
@@ -339,6 +343,7 @@ public class UserAction {
     }
 
     public void runApplication() {
+        displayUser();
         while (true){
             int choice = displayUserMenu();
             switch (choice){
@@ -377,6 +382,12 @@ public class UserAction {
 
     public static void main(String[] args) {
         UserAction userAction = new UserAction();
+        User user = new User();
+        user.setUserName("Rawanyounis");
+        user.setInstaPayAccount(new InstaPayAccount(new BankAccount(new CIBBank())));
+        user.getInstaPayAccount().getAccount().setBalance(344.6);
+        userAction.setCurrentUser(user);
+        userAction.runApplication();
 //        userAction.transferToBankAccount();
     }
 }
