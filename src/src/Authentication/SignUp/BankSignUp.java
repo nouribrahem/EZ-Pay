@@ -44,30 +44,37 @@ public class BankSignUp extends SignUp {
 
         System.out.println("Please enter your mobile number.");
         String number = in.next();
-        if (!number.matches("\\d{11}")) {
-            System.out.println("The mobile number must be 11 digit.");
-        } else account.setMobileNumber(number);
+        while (!number.matches("0(10|11|12)\\d{8}")) {
+            System.out.println("The mobile number must be 11 digit and start with 010 | 011 | 012.");
+            number = in.next();
+
+        }
+
+        account.setMobileNumber(number);
 
         System.out.println("Please enter your bank number.");
         String bankNumber = in.next();
-        if (!bankNumber.matches("\\d{8}")) {
-            System.out.println("The bank number must be 8 digit.");
-        } else account.setBankNumber(bankNumber);
+        while (!bankNumber.matches("\\d{8}")) {
+            System.out.println("The bank number must be 8 digit, try again.");
+            bankNumber = in.next();
+        }
+        account.setBankNumber(bankNumber);
 
 
         boolean verify = account.getProvider().verifyAccount(account);
+        System.out.println(verify);
         if (verify) {
             otp.sendOTP(number);
             System.out.println("Please enter the otp number.");
             String OTPNumber = in.next();
-            if (otp.verifyOTP(OTPNumber)) {
-                this.instapayAccount.setAccount(account);
-
-                return true;
-            } else {
-                System.out.println("The OTP number you have entered is not correct.");
+            while (!otp.verifyOTP(OTPNumber)) {
+                System.out.println("The OTP number you have entered is not correct, try again.");
+                OTPNumber = in.next();
             }
+            this.instapayAccount.setAccount(account);
 
+            System.out.println("The bank created successfully");
+            return true;
         } else {
             System.out.println("The bank cannot be verified");
         }

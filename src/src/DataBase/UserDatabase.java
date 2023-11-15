@@ -1,6 +1,8 @@
 package DataBase;
 
 import Accounts.*;
+import Accounts.Providers.CIBBank;
+import Accounts.Providers.CIBEwallet;
 import UserManagement.User;
 
 import java.util.ArrayList;
@@ -10,7 +12,23 @@ public class UserDatabase {
     private final List<User> users;
     {
         users = new ArrayList<>();
+
+
     }
+
+    public void fillData(){
+        User temp  = new User();
+        Account atemp = new BankAccount(new CIBBank());
+        atemp.setBalance(1234.24);
+        InstaPayAccount itemp = new InstaPayAccount(atemp);
+        temp.setUserName("menna");
+        temp.setPassword("123");
+        temp.setInstaPayAccount(itemp);
+
+        addUser(temp);
+    }
+
+
     public boolean addUser(User user) {
         if (!users.contains(user)) {
             users.add(user);
@@ -62,7 +80,7 @@ public class UserDatabase {
         for (User u : users) {
             if (u == user){
                 Account account =  u.getInstaPayAccount().getAccount();
-                account.setBalance(account.getProvider().getBalance());
+                account.setBalance(account.getBalance());
                 u.getInstaPayAccount().setAccount(account);
                 break;
             }

@@ -9,7 +9,7 @@ public class Account {
     private String mobileNumber;
     private AccountProvider provider;
 
-    Account(AccountProvider provider){
+    public Account(AccountProvider provider){
         this.provider = provider;
     }
 
