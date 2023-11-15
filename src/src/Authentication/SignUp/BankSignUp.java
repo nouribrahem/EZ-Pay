@@ -62,6 +62,7 @@ public class BankSignUp extends SignUp {
 
 
         boolean verify = account.getProvider().verifyAccount(account);
+        System.out.println(verify);
         if (verify) {
             otp.sendOTP(number);
             System.out.println("Please enter the otp number.");

@@ -26,7 +26,7 @@ public class Transaction {
     public void setDateTime() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
-        this.dateTime = LocalDateTime.parse(now.format(formatter));
+        this.dateTime = now;
     }
 
     public double getAmount() {

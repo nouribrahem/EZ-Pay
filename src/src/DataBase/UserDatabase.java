@@ -80,7 +80,7 @@ public class UserDatabase {
         for (User u : users) {
             if (u == user){
                 Account account =  u.getInstaPayAccount().getAccount();
-                account.setBalance(account.getProvider().getBalance());
+                account.setBalance(account.getBalance());
                 u.getInstaPayAccount().setAccount(account);
                 break;
             }
