@@ -23,7 +23,6 @@ public class Authentication {
 
         if(userDatabase.searchSignin(username, password)){
             System.out.println("Login successful");
-            user = getSigninUser();
             return true;
         }else{
             System.out.println("User name or password incorrect");

@@ -60,7 +60,7 @@ public class UserAction {
 
     public void displayUser(){
         System.out.println("Welcome, "+currentUser.getUserName()+"!");
-        System.out.println("Current Balance: "+ currentUser.getInstaPayAccount().getAccount().getBalance());
+        System.out.println("Current Balance: "+ currentUser.getAccount().getAccount().getBalance());
     }
 
 //    private void signIn(){

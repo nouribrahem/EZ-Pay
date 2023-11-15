@@ -1,6 +1,8 @@
 package Authentication.SignUp;
 
 ;
+import Accounts.Account;
+import Accounts.InstaPayAccount;
 import DataBase.UserDatabase;
 import UserManagement.User;
 import java.util.Scanner;
@@ -8,6 +10,7 @@ import java.util.Scanner;
 public abstract class SignUp {
     OTPManager otp;
     User user = new User();
+    InstaPayAccount instapayAccount;
 
     public SignUp(OTPManager otp) {
         this.otp = otp;
@@ -33,6 +36,8 @@ public abstract class SignUp {
             if(password.matches("^(?=.*[0-9])" + "(?=.*[a-z])(?=.*[A-Z])" + "(?=.*[@#$%^&+=])" + "(?=\\S+$).{8,20}$")){
                 System.out.println("Valid password");
                 user.setPassword(password);
+                //TODO the account attribute has be correctly set
+                user.setInstaPayAccountaccount(instapayAccount);
 //                UserAction.displayUser();
                 return true;
             }

@@ -1,6 +1,6 @@
 package Accounts;
 
-public class InstaPayAccount {
+public class InstaPayAccount{
     private Account account;
     private String instaPayAccountNumber;
     InstaPayAccount(Account account, String instaPayAccountNumber){
