@@ -2,19 +2,22 @@ package Authentication.SignUp;
 
 import Accounts.Account;
 import Accounts.BankAccount;
-import Accounts.Providers.BankProvider;
+import Accounts.Providers.BankAccountProvider;
+import Accounts.Providers.QNBBank;
 
 import java.util.Scanner;
 
-import static java.lang.Character.isDigit;
 
-public abstract class BankSignUp extends SignUp{
-    public BankSignUp(OTPManager otp) {
-        super(otp);
+public class BankSignUp extends SignUp{
+    public BankSignUp() {
+        super(new OTPManager());
     }
 
     public boolean createAccount(){
-        BankAccount account = new BankAccount();
+        BankAccountProvider provider = new QNBBank();
+        //TODO(add input to create type of provider)
+
+        BankAccount account = new BankAccount(provider);
 
         Scanner in = new Scanner(System.in);
 
@@ -32,8 +35,8 @@ public abstract class BankSignUp extends SignUp{
         }
         else account.setBankNumber(bankNumber);
 
-        BankProvider provider = new BankProvider();
-        boolean verify = provider.verifyAccount(account);
+
+        boolean verify = account.getProvider().verifyAccount(account);
         if(verify){
             otp.sendOTP(number);
             System.out.println("Please enter the otp number.");
@@ -52,9 +55,9 @@ public abstract class BankSignUp extends SignUp{
     }
 
     public static void main(String[] args){
-        BankAccount account = new BankAccount();
-        account.setBankNumber("123");
-        account.setMobileNumber("0123");
+//        BankAccount account = new BankAccount();
+//        account.setBankNumber("123");
+//        account.setMobileNumber("0123");
 
     }
 }

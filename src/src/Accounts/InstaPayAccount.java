@@ -2,7 +2,9 @@ package Accounts;
 
 public class InstaPayAccount {
     private Account account;
-    private String instaPayAccountNumber;
+    public InstaPayAccount(Account account){
+        this.account = account;
+    }
 
     public Account getAccount() {
         return account;
@@ -10,13 +12,5 @@ public class InstaPayAccount {
 
     public void setAccount(Account account) {
         this.account = account;
-    }
-
-    public String getInstaPayAccountNumber() {
-        return instaPayAccountNumber;
-    }
-
-    public void setInstaPayAccountNumber(String instaPayAccountNumber) {
-        this.instaPayAccountNumber = instaPayAccountNumber;
     }
 }
