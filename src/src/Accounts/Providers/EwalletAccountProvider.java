@@ -1,5 +1,6 @@
 package Accounts.Providers;
 
+import Accounts.Account;
 import Accounts.EwalletAccount;
 
 import java.util.Random;
@@ -17,5 +18,10 @@ public class EwalletAccountProvider extends AccountProvider {
             account.setMobileNumber("01"+String.valueOf(phone));
             registeredAccounts.add(account);
         }
+    }
+
+    @Override
+    public Boolean verifyAccount(Account account) {
+        return null;
     }
 }

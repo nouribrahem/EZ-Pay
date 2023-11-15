@@ -2,14 +2,22 @@ package Accounts.Providers;
 
 import Accounts.Account;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AccountProvider {
-    protected List<Account> registeredAccounts;
-    public abstract void fillAccounts();
-    public Boolean verifyAccount(Account account){
-        return registeredAccounts.contains(account);
+    protected List<Account> registeredAccounts = new ArrayList<Account>();
+
+    public List<Account> getRegisteredAccounts() {
+        return registeredAccounts;
     }
+
+    public void setRegisteredAccounts(List<Account> registeredAccounts) {
+        this.registeredAccounts = registeredAccounts;
+    }
+
+    public abstract void fillAccounts();
+    public abstract Boolean verifyAccount(Account account);
     public  Double getAccountBalance(Account account){
         if(verifyAccount(account)){
             Account target = registeredAccounts.get(registeredAccounts.indexOf(account));

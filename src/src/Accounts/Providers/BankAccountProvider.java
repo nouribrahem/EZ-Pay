@@ -1,10 +1,14 @@
 package Accounts.Providers;
 
+import Accounts.Account;
 import Accounts.BankAccount;
 
 import java.util.Random;
 
 public class BankAccountProvider extends AccountProvider {
+    public BankAccountProvider() {
+        fillAccounts();
+    }
 
     @Override
     public void fillAccounts() {
@@ -18,5 +22,10 @@ public class BankAccountProvider extends AccountProvider {
             account.setBankNumber(String.valueOf(random.nextLong(99999999)));
             registeredAccounts.add(account);
         }
+    }
+    @Override
+    public Boolean verifyAccount(Account account) {
+        account = new BankAccount(account.getProvider());
+        return registeredAccounts.contains(account.getBankNumber());
     }
 }

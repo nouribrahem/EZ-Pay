@@ -1,14 +1,15 @@
 package Authentication.SignUp;
 
 import Accounts.EwalletAccount;
-import Accounts.Providers.EwalletAccountProvider;
-import Accounts.Providers.VodafoneWallet;
+import Accounts.InstaPayAccount;
+import Accounts.Providers.*;
+import Authentication.SignUp.OTPManager;
 
 import java.util.Scanner;
 
-public class WalletSignUp extends SignUp{
-    public WalletSignUp() {
-        super(new OTPManager());
+public class WalletSignUp extends SignUp {
+    public WalletSignUp(OTPManager otp) {
+        super(otp);
     }
 
     public  boolean createAccount(){
@@ -16,13 +17,34 @@ public class WalletSignUp extends SignUp{
 
 
         System.out.println("Please enter The type of .");
-        String typeProvider = in.next();
-        EwalletAccountProvider ewalletProvider = new VodafoneWallet();
+
+        EwalletAccountProvider ewalletProvider = null;
         //TODO(add input to create type of provider)
 
+        int choice;
+        do{
+            System.out.println("Please enter the bank provider");
+            for(EwalletProviders wallet: EwalletProviders.values()){
+                System.out.println(wallet.ordinal()+1+"- "+ wallet);
+            }
+            choice = in.nextInt();
+            if (choice <= 0 || choice >= 4) {
+                System.out.println("Please enter a valid input 1 through 3!");
+            }
+
+        } while (choice <= 0 || choice >= 4);
+
+        if (choice==1) {
+            ewalletProvider = new CIBEwallet();
+        }
+        else if(choice==2){
+            ewalletProvider = new FawryEwallet();
+        }
+        else {
+            ewalletProvider = new VodafoneWallet();
+        }
+
         EwalletAccount ewalletAccount = new EwalletAccount(ewalletProvider);
-
-
 
         System.out.println("Please enter your mobile number.");
         String number = in.next();
@@ -31,7 +53,27 @@ public class WalletSignUp extends SignUp{
         }
         else ewalletAccount.setMobileNumber(number);
 
+        boolean verify = instapayAccount.getAccount().getProvider().verifyAccount(instapayAccount.getAccount());
+        if (verify) {
+            otp.sendOTP(number);
+            System.out.println("Please enter the otp number.");
+            String OTPNumber = in.next();
+            if (otp.verifyOTP(OTPNumber)) {
+                this.instapayAccount.setAccount(ewalletAccount);
+                return true;
+            } else {
+                System.out.println("The OTP number you have entered is not correct.");
+            }
+
+        } else {
+            System.out.println("The bank cannot be verified");
+        }
         return false;
+    }
+
+    public InstaPayAccount getAccount(){
+        return instapayAccount;
+    }
 
     }
-}
+

@@ -6,8 +6,10 @@ import Accounts.EwalletAccount;
 import Accounts.InstaPayAccount;
 import Accounts.Providers.*;
 import Authentication.SignUp.BankSignUp;
+import Authentication.SignUp.OTPManager;
 import Authentication.SignUp.WalletSignUp;
 import Bills.BillPayment;
+import Bills.*;
 import DataBase.*;
 import Authentication.*;
 import Transaction.*;
@@ -29,7 +31,7 @@ public class UserAction {
         authentication = new Authentication();
         userDatabase = new UserDatabase();
         transactionDatabase = new TransactionDatabase();
-        billPayment = new BillPayment();
+        billPayment = null;
     }
     void setCurrentUser(User u){
         currentUser = u;
@@ -132,15 +134,23 @@ public class UserAction {
         return bankAccount;
     }
     private EwalletAccount getRecievingEwalletAccount(EwalletAccountProvider accountProvider) {
+        Scanner input = new Scanner(System.in);
         EwalletAccount ewalletAccount = new EwalletAccount(accountProvider);
-        String mobileNum;
+        String mobileNum="";
         int i = 0;
+        for(Account account:accountProvider.getRegisteredAccounts()){
+            System.out.println(account.getMobileNumber());
+        }
+
         do{
             if(i != 0){
                 System.out.println("Please enter a valid receiving mobile number");
             }
-            System.out.println("Please enter receiving mobile number");
-            mobileNum = scanner.nextLine();
+            else{
+                System.out.println("Please enter receiving mobile number");
+            }
+
+            mobileNum = input.nextLine();
             ewalletAccount.setMobileNumber(mobileNum);
             i++;
         }while(!ewalletAccount.getProvider().verifyAccount(ewalletAccount));
@@ -299,16 +309,16 @@ public class UserAction {
     }
 
     public void payGasBill(){
-//        billPayment.setBillType(new GasBillPayment);
-//        billPayment.payBill();
+        billPayment = new GasBillPayment();
+        billPayment.payBill(currentUser.getInstaPayAccount().getAccount());
     }
     public void payWaterBill(){
-//        billPayment.setBillType(new WaterBillPayment);
-//        billPayment.payBill();
+        billPayment = new WaterBillPayment();
+        billPayment.payBill(currentUser.getInstaPayAccount().getAccount());
     }
     public void payElectricityBill(){
-//        billPayment.setBillType(new ElectricityBillPayment);
-//        billPayment.payBill();
+        billPayment = new ElectricityBillPayment();
+        billPayment.payBill(currentUser.getInstaPayAccount().getAccount());
     }
     public void runSignUser(){
         while(true){
@@ -322,7 +332,7 @@ public class UserAction {
                             break;
                         }
                         case 2:{
-                            authentication.setSignUp(new WalletSignUp());
+                            authentication.setSignUp(new WalletSignUp(new OTPManager()));
                             break;
                         }
                     }
