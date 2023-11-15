@@ -11,14 +11,7 @@ public class Authentication {
 
     public boolean signIn(String username, String password){
         UserDatabase userDatabase = new UserDatabase();
-
-        System.out.println("Please enter your username");
-        Scanner scanner = new Scanner(System.in);
-        username = scanner.nextLine();
         user.setUserName(username);
-
-        System.out.println("Please enter you password");
-        password = scanner.nextLine();
         user.setPassword(password);
 
         if(userDatabase.searchSignin(username, password)){
@@ -42,7 +35,5 @@ public class Authentication {
     public User getSigninUser(){
         return user;
     }
-
-
 
 }

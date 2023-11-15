@@ -1,6 +1,5 @@
 package Authentication.SignUp;
 
-;
 import DataBase.UserDatabase;
 import UserManagement.User;
 import java.util.Scanner;

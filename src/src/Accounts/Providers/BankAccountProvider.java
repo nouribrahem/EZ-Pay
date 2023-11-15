@@ -3,7 +3,7 @@ package Accounts.Providers;
 public class BankAccountProvider extends AccountProvider {
     @Override
     public Boolean verifyAccount() {
-        return null;
+        return true;
     }
     @Override
     public Double getAccountBalance() {
