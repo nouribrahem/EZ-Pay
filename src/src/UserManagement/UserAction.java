@@ -1,6 +1,9 @@
 package UserManagement;
 
 import Accounts.BankAccount;
+import Accounts.InstaPayAccount;
+import Accounts.Providers.BankProvider;
+import Accounts.Providers.Provider;
 import DataBase.DatabaseManager;
 import PayBills.BillPayment;
 import PayBills.ElectricityBillPayment;
@@ -101,6 +104,14 @@ public class UserAction {
     }
 
     private void payBills() {
+//        currentUser = new User();
+//        Provider bankProvider = new BankProvider();
+//        BankAccount bankAccount = new BankAccount();
+//        bankAccount.setBalance(1200.0);
+//        bankAccount.setProvider(bankProvider);
+//        InstaPayAccount instaPayAccount = new InstaPayAccount();
+
+
         Scanner input = new Scanner(System.in);
         boolean validChoice = false;
         while (!validChoice) {
@@ -147,7 +158,7 @@ public class UserAction {
                 int billInternalChoice = input.nextInt();
                 switch (billInternalChoice) {
                     case 1: {
-                        billPayment.payBill();
+                        billPayment.payBill(currentUser.getInstaPayAccount().getAccount());
                         validInternalChoice = true;
                         break;
                     }
