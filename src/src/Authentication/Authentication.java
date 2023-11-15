@@ -33,6 +33,7 @@ public class Authentication {
     public boolean signUp(){
         if(signUp.signUp()){
             user = signUp.getSignupUser();
+            userDatabase.addUser(user);
             return true;
         }
         else {return false;}

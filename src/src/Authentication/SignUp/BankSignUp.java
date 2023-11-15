@@ -71,6 +71,7 @@ public class BankSignUp extends SignUp {
                 OTPNumber = in.next();
             }
             this.instapayAccount.setAccount(account);
+
             System.out.println("The bank created successfully");
             return true;
         } else {
