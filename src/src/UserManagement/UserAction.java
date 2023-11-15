@@ -213,10 +213,12 @@ public class UserAction {
         if(sendingAccount instanceof BankAccount && sendingAccount.getBalance() >= amount){
             sendingUserTransaction = transaction.makeTransaction(receivingAccount,sendingAccount,amount);
             transactionDatabase.addTransaction(sendingAccount,sendingUserTransaction);
+            userDatabase.updateUserBalance(currentUser);
             if(userDatabase.isRegisteredAccount(receivingAccount)){
                 Transaction receivingUserTransaction = sendingUserTransaction;
                 receivingUserTransaction.setType(TransactionType.recieve);
                 transactionDatabase.addTransaction(receivingAccount,receivingUserTransaction);
+                //update recieving user database by getting user from account?
             }
             System.out.println("Transferring to bank account succeeded!");
 
@@ -247,10 +249,12 @@ public class UserAction {
         if(sendingAccount.getBalance() >= amount){
             sendingUserTransaction = transaction.makeTransaction(receivingAccount,sendingAccount,amount);
             transactionDatabase.addTransaction(sendingAccount,sendingUserTransaction);
+            userDatabase.updateUserBalance(currentUser);
             if(userDatabase.isRegisteredAccount(receivingAccount)){
                 Transaction receivingUserTransaction = sendingUserTransaction;
                 receivingUserTransaction.setType(TransactionType.recieve);
                 transactionDatabase.addTransaction(receivingAccount,receivingUserTransaction);
+                //update recieving user database by getting user using account from database?
             }
             System.out.println("Transferring to ewallet account succeeded!");
 
@@ -261,18 +265,21 @@ public class UserAction {
     void transferToInstapayAccount(){
         String username = inputInstaPayUsername();
         double amount = inputAmount();
-        Account receivingAccount = userDatabase.getUser(username).getInstaPayAccount().getAccount();
+        User recievingUser = userDatabase.getUser(username);
+        Account receivingAccount = recievingUser.getInstaPayAccount().getAccount();
         Account sendingAccount = currentUser.getInstaPayAccount().getAccount();
         Transaction sendingUserTransaction;
         if(sendingAccount instanceof BankAccount || receivingAccount instanceof EwalletAccount){
             if(sendingAccount.getBalance() >= amount){
+
                 sendingUserTransaction = transaction.makeTransaction(receivingAccount,sendingAccount,amount);
                 transactionDatabase.addTransaction(sendingAccount,sendingUserTransaction);
-                if(userDatabase.isRegisteredAccount(receivingAccount)){
-                    Transaction receivingUserTransaction = sendingUserTransaction;
-                    receivingUserTransaction.setType(TransactionType.recieve);
-                    transactionDatabase.addTransaction(receivingAccount,receivingUserTransaction);
-                }
+                Transaction receivingUserTransaction = sendingUserTransaction;
+                receivingUserTransaction.setType(TransactionType.recieve);
+                transactionDatabase.addTransaction(receivingAccount,receivingUserTransaction);
+
+                userDatabase.updateUserBalance(currentUser);
+                userDatabase.updateUserBalance(recievingUser);
                 System.out.println("Transferring to instapay account succeeded!");
 
             }else{
