@@ -52,8 +52,8 @@ public abstract class BankSignUp extends SignUp {
 
         System.out.println("Please enter your bank number.");
         String bankNumber = in.next();
-        if (!bankNumber.matches("\\d{10}")) {
-            System.out.println("The bank number must be 10 digit.");
+        if (!bankNumber.matches("\\d{8}")) {
+            System.out.println("The bank number must be 8 digit.");
         } else account.setBankNumber(bankNumber);
 
 
