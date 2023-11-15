@@ -1,7 +1,6 @@
 package Authentication;
 import Authentication.SignUp.SignUp;
-import Authentication.SignUp.BankSignUp;
-import Authentication.SignUp.SignUp;
+
 
 import DataBase.UserDatabase;
 import UserManagement.User;
@@ -31,7 +30,6 @@ public class Authentication {
     public boolean signUp(){
         if(signUp.signUp()){
             user = signUp.getSignupUser();
-//            userDatabase.addUser(user);
             return true;
         }
         else {return false;}

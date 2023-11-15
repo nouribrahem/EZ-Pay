@@ -1,6 +1,6 @@
 package Accounts;
 
-public class InstaPayAccount {
+public class InstaPayAccount{
     private Account account;
     public InstaPayAccount(Account account){
         this.account = account;
