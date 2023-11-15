@@ -128,7 +128,7 @@ public class UserAction {
             bankNum = scanner.nextLine();
             bankAccount.setBankNumber(bankNum);
             i++;
-        }while(!bankAccount.getProvider().verifyAccount());
+        }while(!bankAccount.getProvider().verifyAccount(bankAccount));
         return bankAccount;
     }
     private EwalletAccount getRecievingEwalletAccount(EwalletAccountProvider accountProvider) {
@@ -143,7 +143,7 @@ public class UserAction {
             mobileNum = scanner.nextLine();
             ewalletAccount.setMobileNumber(mobileNum);
             i++;
-        }while(!ewalletAccount.getProvider().verifyAccount());
+        }while(!ewalletAccount.getProvider().verifyAccount(ewalletAccount));
         return ewalletAccount;
     }
     private String inputUsername() {
@@ -195,7 +195,7 @@ public class UserAction {
         }
     }
     void transferToBankAccount(){
-        BankAccountProvider accountProvider= new BankAccountProvider();
+        BankAccountProvider accountProvider = null;
         double amount = inputAmount();
         switch (displayBankProvidersOptions()){
             case 1: {
