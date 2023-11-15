@@ -40,14 +40,14 @@ public class UserDatabase {
         return false;
     }
 
-    public boolean isRegisteredAccount(Account receivingAccount) {
+    public User isRegisteredAccount(Account receivingAccount) {
         for (User user : users) {
             InstaPayAccount instapayAccount = user.getInstaPayAccount();
             if (instapayAccount != null && instapayAccount.getAccount().equals(receivingAccount)) {
-                return true;
+                return user;
             }
         }
-        return false;
+        return null;
     }
 
     public User getUser(String username) {

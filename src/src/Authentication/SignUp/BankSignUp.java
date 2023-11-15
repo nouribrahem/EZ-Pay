@@ -7,7 +7,6 @@ import Accounts.Providers.QNBBank;
 
 import java.util.Scanner;
 
-import static java.lang.Character.isDigit;
 
 public class BankSignUp extends SignUp{
     public BankSignUp() {

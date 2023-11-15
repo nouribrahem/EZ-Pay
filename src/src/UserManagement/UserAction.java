@@ -218,12 +218,14 @@ public class UserAction {
             sendingUserTransaction = transaction.makeTransaction(receivingAccount,sendingAccount,amount);
             transactionDatabase.addTransaction(sendingAccount,sendingUserTransaction);
             userDatabase.updateUserBalance(currentUser);
-            if(userDatabase.isRegisteredAccount(receivingAccount)){
+            User recievingUser = userDatabase.isRegisteredAccount(receivingAccount);
+            if( recievingUser != null){
                 Transaction receivingUserTransaction = sendingUserTransaction;
                 receivingUserTransaction.setType(TransactionType.recieve);
                 transactionDatabase.addTransaction(receivingAccount,receivingUserTransaction);
-                //update recieving user database by getting user from account?
+                userDatabase.updateUserBalance(recievingUser);
             }
+            userDatabase.updateUserBalance(currentUser);
             System.out.println("Transferring to bank account succeeded!");
 
         }else{
@@ -254,12 +256,14 @@ public class UserAction {
             sendingUserTransaction = transaction.makeTransaction(receivingAccount,sendingAccount,amount);
             transactionDatabase.addTransaction(sendingAccount,sendingUserTransaction);
             userDatabase.updateUserBalance(currentUser);
-            if(userDatabase.isRegisteredAccount(receivingAccount)){
+            User recievingUser = userDatabase.isRegisteredAccount(receivingAccount);
+            if(recievingUser != null){
                 Transaction receivingUserTransaction = sendingUserTransaction;
                 receivingUserTransaction.setType(TransactionType.recieve);
                 transactionDatabase.addTransaction(receivingAccount,receivingUserTransaction);
-                //update recieving user database by getting user using account from database?
+                userDatabase.updateUserBalance(recievingUser);
             }
+            userDatabase.updateUserBalance(currentUser);
             System.out.println("Transferring to ewallet account succeeded!");
 
         }else{
