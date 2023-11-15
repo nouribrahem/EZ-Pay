@@ -31,8 +31,22 @@ abstract public class BillPayment {
         this.data = data;
     }
 
-    public void payBill() {
-        
+    public void payBill(Account account) {
+        double amount = billProvider.getBillReceipt(data).calcTotalAmount();
+        System.out.println("Your balance : " + account.getBalance());
+        System.out.println("Your bill receipt total amount : " + amount);
+        if (confirmPayment(account)) {
+            Scanner input = new Scanner(System.in);
+            System.out.println("\nAre you sure you want to pay the bill ?\n 1 - Yes.\n 2 - No.");
+            int choice = input.nextInt();
+            if (choice == 1) {
+                account.setBalance(account.getBalance() - amount);
+                System.out.println("\nYou have paid the bill successfully.\n");
+                System.out.println("Your current balance : " + account.getBalance());
+            }
+        } else {
+            System.out.println("\nSorry! You don't have enough money in your balance to pay the bill :(\n");
+        }
     }
 
 //    public void setUtilityDataType() {
@@ -61,20 +75,9 @@ abstract public class BillPayment {
     }
 
     public boolean confirmPayment(Account account) {
-        double amount = billProvider.getBillReceipt(data).calcTotalAmount();
-        if (account.getBalance() >= amount) {
-            System.out.println("Your balance : " + account.getBalance());
-            System.out.println("Your bill receipt total amount : " + amount);
-            Scanner input = new Scanner(System.in);
-            System.out.println("\nAre you sure you want to pay the bill ?\n 1 - Yes.\n 2 - No.");
-            int choice = input.nextInt();
-            if (choice == 1) {
-                account.setBalance(account.getBalance() - amount);
-                System.out.println("\nYou have paid the bill successfully.\n");
-                System.out.println("Your current balance : " + account.getBalance());
+        if (account.getBalance() >= billProvider.getBillReceipt(data).calcTotalAmount())
                 return true;
-            }
-        }
         return false;
     }
+
 }
