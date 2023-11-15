@@ -11,47 +11,49 @@ import java.util.Scanner;
 
 import static java.lang.Character.isDigit;
 
-public abstract class BankSignUp extends SignUp{
-    public BankSignUp(OTPManager otp) {
-        super(otp);
+public abstract class BankSignUp extends SignUp {
+    public BankSignUp() {
+        super(new OTPManager());
     }
 
-//    public User getUgetSignupUser() {}
+    //    public User getUgetSignupUser() {}
     public boolean createAccount() {
         //TODO(add input to create type of provider)
         Scanner in = new Scanner(System.in);
         BankAccountProvider bankProvider = null;
-        System.out.println("Please choose the bank provider:" +
-                "1-CIB" +
-                "2-NBE" +
-                "QNB");
-        String type = in.next();
+        int choice;
+        do {
+            System.out.println("Please enter the bank provider");
+            for (BankProviders bank : BankProviders.values()) {
+                System.out.println(bank.ordinal() + 1 + "- " + bank);
+            }
+            choice = in.nextInt();
+            if (choice <= 0 || choice >= 4) {
+                System.out.println("Please enter a valid input 1 through 3!");
+            }
 
-        if (Objects.equals(type, "CIB")) {
+        } while (choice <= 0 || choice >= 4);
+
+        if (choice == 1) {
             bankProvider = new CIBBank();
-        }
-        else if(Objects.equals(type, "NBE")){
+        } else if (choice == 2) {
             bankProvider = new NBEBank();
-        }
-        else if(Objects.equals(type, "QNB")){
+        } else {
             bankProvider = new QNBBank();
-        }
-        else{
-            System.out.println("Invalid provider type.");
         }
 
         BankAccount account = new BankAccount(bankProvider);
 
         System.out.println("Please enter your mobile number.");
         String number = in.next();
-        if (!number.matches("\\d+")) {
-            System.out.println("The mobile number must contain only digits [0-9].");
+        if (!number.matches("\\d{11}")) {
+            System.out.println("The mobile number must be 11 digit.");
         } else account.setMobileNumber(number);
 
         System.out.println("Please enter your bank number.");
         String bankNumber = in.next();
-        if (!bankNumber.matches("\\d+")) {
-            System.out.println("The bank number must contain only digit[0-9].");
+        if (!bankNumber.matches("\\d{10}")) {
+            System.out.println("The bank number must be 10 digit.");
         } else account.setBankNumber(bankNumber);
 
 
@@ -61,7 +63,7 @@ public abstract class BankSignUp extends SignUp{
             System.out.println("Please enter the otp number.");
             String OTPNumber = in.next();
             if (otp.verifyOTP(OTPNumber)) {
-                this.instapayAccount.setAccount( account);
+                this.instapayAccount.setAccount(account);
 
                 return true;
             } else {
@@ -74,14 +76,8 @@ public abstract class BankSignUp extends SignUp{
         return false;
     }
 
-    public InstaPayAccount getAccount(){
+    public InstaPayAccount getAccount() {
         return instapayAccount;
     }
-
-    public static void main(String[] args){
-//        BankAccount account = new BankAccount();
-//        account.setBankNumber("123");
-//        account.setMobileNumber("0123");
-
-    }
 }
+

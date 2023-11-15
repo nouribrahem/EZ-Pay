@@ -19,27 +19,31 @@ public abstract class WalletSignUp extends SignUp{
 
 
         System.out.println("Please enter The type of .");
-        String typeProvider = in.next();
 
         EwalletAccountProvider ewalletProvider = null;
         //TODO(add input to create type of provider)
 
-        System.out.println("Please choose the wallet provider:" +
-                "1-CIB" +
-                "2-fawry" +
-                "vodafone");
+        int choice;
+        do{
+            System.out.println("Please enter the bank provider");
+            for(EwalletProviders wallet: EwalletProviders.values()){
+                System.out.println(wallet.ordinal()+1+"- "+ wallet);
+            }
+            choice = in.nextInt();
+            if (choice <= 0 || choice >= 4) {
+                System.out.println("Please enter a valid input 1 through 3!");
+            }
 
-        if (Objects.equals(typeProvider, "CIB")) {
+        } while (choice <= 0 || choice >= 4);
+
+        if (choice==1) {
             ewalletProvider = new CIBEwallet();
         }
-        else if(Objects.equals(typeProvider, "fawry")){
+        else if(choice==2){
             ewalletProvider = new FawryEwallet();
         }
-        else if(Objects.equals(typeProvider, "vodafone")){
+        else {
             ewalletProvider = new VodafoneWallet();
-        }
-        else{
-            System.out.println("Invalid provider type.");
         }
 
         EwalletAccount ewalletAccount = new EwalletAccount(ewalletProvider);
