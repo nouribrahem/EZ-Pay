@@ -1,13 +1,12 @@
 package UserManagement;
 
-import Accounts.Account;
 import Accounts.InstaPayAccount;
 
 public class User {
     private String userName;
     private String password;
-    private InstaPayAccount instaPayAccountaccount;
-
+    private InstaPayAccount instaPayAccount;
+    ;
 
 
     public String getUserName() {
@@ -26,12 +25,12 @@ public class User {
         this.password = password;
     }
 
-    public InstaPayAccount getAccount() {
-        return instaPayAccountaccount;
+    public InstaPayAccount getInstaPayAccount() {
+        return instaPayAccount;
     }
 
-    public void setInstaPayAccountaccount(InstaPayAccount account) {
-        this.instaPayAccountaccount = account;
+    public void setInstaPayAccount(InstaPayAccount instaPayAccount) {
+        this.instaPayAccount = instaPayAccount;
     }
     public static void main(String[] args) {
         System.out.println("Hello world!");

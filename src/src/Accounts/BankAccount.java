@@ -5,7 +5,7 @@ import Accounts.Providers.AccountProvider;
 import java.security.Provider;
 
 public class BankAccount extends Account{
-    private String bankNumber;
+    protected String bankNumber;
     public BankAccount(AccountProvider provider) {
         super(provider);
     }

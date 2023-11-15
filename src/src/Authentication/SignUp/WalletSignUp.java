@@ -1,17 +1,15 @@
 package Authentication.SignUp;
 
-import Accounts.Account;
-import Accounts.BankAccount;
 import Accounts.EwalletAccount;
 import Accounts.InstaPayAccount;
 import Accounts.Providers.*;
+import Authentication.SignUp.OTPManager;
 
-import java.util.Objects;
 import java.util.Scanner;
 
-public class WalletSignUp extends SignUp{
-    public WalletSignUp() {
-        super(new OTPManager());
+public class WalletSignUp extends SignUp {
+    public WalletSignUp(OTPManager otp) {
+        super(otp);
     }
 
     public  boolean createAccount(){
@@ -50,23 +48,27 @@ public class WalletSignUp extends SignUp{
 
         System.out.println("Please enter your mobile number.");
         String number = in.next();
-        if(!number.matches("\\d+")){
-            System.out.println("The mobile number must contain only digits [0-9].");
-        }
-        else ewalletAccount.setMobileNumber(number);
+        while (!number.matches("0(10|11|12)\\d{8}")) {
+            System.out.println("The mobile number must be 11 digit and start with 010 | 011 | 012.");
+            number = in.next();
 
-        boolean verify = instapayAccount.getAccount().getProvider().verifyAccount();
+        }
+        ewalletAccount.setMobileNumber(number);
+
+        boolean verify = ewalletAccount.getProvider().verifyAccount(ewalletAccount);
         if (verify) {
             otp.sendOTP(number);
             System.out.println("Please enter the otp number.");
             String OTPNumber = in.next();
-            if (otp.verifyOTP(OTPNumber)) {
-                this.instapayAccount.setAccount(ewalletAccount);
-                return true;
-            } else {
-                System.out.println("The OTP number you have entered is not correct.");
+            while (!otp.verifyOTP(OTPNumber)) {
+                System.out.println("The OTP number you have entered is not correct, try again.");
+                OTPNumber = in.next();
             }
+            ewalletAccount.setBalance(ewalletAccount.getProvider().getAccountBalance(ewalletAccount));
 
+            this.instapayAccount = new InstaPayAccount(ewalletAccount);
+            System.out.println("The wallet created successfully");
+            return true;
         } else {
             System.out.println("The bank cannot be verified");
         }

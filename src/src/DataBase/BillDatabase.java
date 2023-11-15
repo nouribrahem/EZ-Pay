@@ -1,7 +1,7 @@
 package DataBase;
 
 import Accounts.Account;
-import Bills.BillRecipt;
+import Bills.BillAPI.BillReceipt;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,24 +9,24 @@ import java.util.List;
 import java.util.Map;
 
 public class BillDatabase {
-    private Map<Account,List<BillRecipt>> accountBills;
+    private Map<Account,List<BillReceipt>> accountBills;
     {
-        accountBills = new HashMap<Account,List<BillRecipt>>();
+        accountBills = new HashMap<Account,List<BillReceipt>>();
     }
-    public void addTransaction(Account account, BillRecipt billRecipt) {
-        if (accountBills.containsKey(billRecipt)) {
-            List<BillRecipt> billRecipts = accountBills.get(billRecipt);
-            billRecipts.add(billRecipt);
+    public void addTransaction(Account account, BillReceipt BillReceipt) {
+        if (accountBills.containsKey(BillReceipt)) {
+            List<BillReceipt> BillReceipts = accountBills.get(BillReceipt);
+            BillReceipts.add(BillReceipt);
         } else {
-            List<BillRecipt> billRecipts = new ArrayList<>();
-            billRecipts.add(billRecipt);
-            accountBills.put(account, billRecipts);
+            List<BillReceipt> BillReceipts = new ArrayList<>();
+            BillReceipts.add(BillReceipt);
+            accountBills.put(account, BillReceipts);
         }
     }
-    public List<BillRecipt> getTransaction(Account account){
+    public List<BillReceipt> getTransaction(Account account){
         if (accountBills.containsKey(account)) {
-            List<BillRecipt> billRecipts = accountBills.get(account);
-            return billRecipts;
+            List<BillReceipt> BillReceipts = accountBills.get(account);
+            return BillReceipts;
         } else {
             return null;
         }

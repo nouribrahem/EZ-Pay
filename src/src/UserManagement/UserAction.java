@@ -3,11 +3,12 @@ package UserManagement;
 import Accounts.Account;
 import Accounts.BankAccount;
 import Accounts.EwalletAccount;
-import Accounts.InstaPayAccount;
 import Accounts.Providers.*;
 import Authentication.SignUp.BankSignUp;
+import Authentication.SignUp.OTPManager;
 import Authentication.SignUp.WalletSignUp;
 import Bills.BillPayment;
+import Bills.*;
 import DataBase.*;
 import Authentication.*;
 import Transaction.*;
@@ -28,14 +29,16 @@ public class UserAction {
         transaction = new Transaction();
         authentication = new Authentication();
         userDatabase = new UserDatabase();
+        authentication.setUserDatabase(userDatabase);
         transactionDatabase = new TransactionDatabase();
-        billPayment = new BillPayment();
+        billPayment = null;
     }
     void setCurrentUser(User u){
         currentUser = u;
     }
-    Scanner scanner = new Scanner(System.in);
+    Scanner scanner;
     public int displaySignMenu(){
+        scanner = new Scanner(System.in);
         System.out.println("Welcome to EZ-Pay!\n1-SignUp\n2-SignIn");
         int choice = scanner.nextInt();
         while(choice != 1 && choice != 2){
@@ -46,31 +49,34 @@ public class UserAction {
         return choice;
     }
     public int displayUserMenu() {
+        scanner = new Scanner(System.in);
         int choice;
         do {
             System.out.println("""
-            Please choose operation number:
+            \nPlease choose operation number:\n
             1. Transfer to bank account.
             2. Transfer to eWallet account.
             3. Transfer to instapay account.
             4. Pay gas bill.
             5. Pay electricity bill.
             6. Pay water Bill.
-            7. exit.
+            7. Sign out.
+            8. exit.
             """);
 
             choice = scanner.nextInt();
 
-            if (choice <= 0 || choice > 7) {
-                System.out.println("Please enter a valid input 1 through 7!");
+            if (choice <= 0 || choice > 8) {
+                System.out.println("Please enter a valid input 1 through 8!");
             }
 
-        } while (choice <= 0 || choice > 7);
+        } while (choice <= 0 || choice > 8);
 
         return choice;
     }
 
     public int displaySignUpMenu(){
+        scanner = new Scanner(System.in);
         int signupChoice;
         do {
             System.out.println("1-SignUp using Bank Account.\n2-SignUp using E-wallet Account.");
@@ -81,12 +87,12 @@ public class UserAction {
         } while (signupChoice != 1 && signupChoice != 2);
         return signupChoice;
     }
-
     public void displayUser(){
-        System.out.println("Welcome, "+currentUser.getUserName()+"!");
-        System.out.println("Current Balance: "+ currentUser.getAccount().getAccount().getBalance());
+        System.out.println("\nWelcome, "+currentUser.getUserName()+"!");
+        System.out.println("Current Balance: "+ currentUser.getInstaPayAccount().getAccount().getBalance());
     }
     public int displayBankProvidersOptions(){
+        scanner = new Scanner(System.in);
         int choice;
         do {
             System.out.println("Please enter receiving bank provider");
@@ -102,6 +108,7 @@ public class UserAction {
         return choice;
     }
     private int displayEWalletProvidersOptions() {
+        scanner = new Scanner(System.in);
         int choice;
         do {
             System.out.println("Please enter receiving ewallet provider");
@@ -117,49 +124,57 @@ public class UserAction {
         return choice;
     }
     public BankAccount getRecievingBankAccount(AccountProvider accountProvider){
+        scanner = new Scanner(System.in);
         BankAccount bankAccount= new BankAccount(accountProvider);
         String bankNum;
-        int i = 0;
-        do{
-            if(i != 0){
-                System.out.println("Please enter a valid receiving account number");
-            }
-            System.out.println("Please enter receiving account number");
+           System.out.println("Please enter receiving account number");
             bankNum = scanner.nextLine();
             bankAccount.setBankNumber(bankNum);
-            i++;
-        }while(!bankAccount.getProvider().verifyAccount(bankAccount));
+        while(!bankAccount.getProvider().verifyAccount(bankAccount)){
+            System.out.println("Please enter a valid receiving account number");
+            bankNum = scanner.nextLine();
+            bankAccount.setBankNumber(bankNum);
+        }
         return bankAccount;
     }
     private EwalletAccount getRecievingEwalletAccount(EwalletAccountProvider accountProvider) {
+        Scanner input = new Scanner(System.in);
         EwalletAccount ewalletAccount = new EwalletAccount(accountProvider);
-        String mobileNum;
+        String mobileNum="";
         int i = 0;
-        do{
-            if(i != 0){
-                System.out.println("Please enter a valid receiving mobile number");
-            }
-            System.out.println("Please enter receiving mobile number");
-            mobileNum = scanner.nextLine();
+        for(EwalletAccount account:accountProvider.getEwalletRegisteredAccounts()){
+            System.out.println(account.getMobileNumber());
+        }
+        System.out.println("Please enter receiving mobile number");
+        mobileNum = input.nextLine();
+        ewalletAccount.setMobileNumber(mobileNum);
+
+        while(!ewalletAccount.getProvider().verifyAccount(ewalletAccount)){
+            System.out.println("Please enter a valid receiving mobile number");
+            mobileNum = input.nextLine();
             ewalletAccount.setMobileNumber(mobileNum);
-            i++;
-        }while(!ewalletAccount.getProvider().verifyAccount(ewalletAccount));
+            System.out.println(ewalletAccount.getMobileNumber());
+        }
         return ewalletAccount;
     }
     private String inputUsername() {
+        Scanner in = new Scanner(System.in);
         System.out.println("Please enter your username");
-        return scanner.nextLine();
+        return in.nextLine();
     }
 
     private String inputPassword() {
+        Scanner in = new Scanner(System.in);
         System.out.println("Please enter your password");
-        return scanner.nextLine();
+        return in.nextLine();
     }
     private double inputAmount() {
+        scanner = new Scanner(System.in);
         System.out.println("Please enter amount of money to transfer");
         return scanner.nextDouble();
     }
     private String inputInstaPayUsername() {
+        scanner = new Scanner(System.in);
         String username;
         int i = 0;
         do{
@@ -188,6 +203,7 @@ public class UserAction {
     private boolean signUp(){
         if(authentication.signUp()){
             currentUser = authentication.getSigninUser();
+            userDatabase.addUser(currentUser);
             return true;
         }else{
             System.out.println("Failed to sign up!");
@@ -214,7 +230,8 @@ public class UserAction {
         BankAccount receivingAccount = getRecievingBankAccount(accountProvider);
         Account sendingAccount = currentUser.getInstaPayAccount().getAccount();
         Transaction sendingUserTransaction;
-        if(sendingAccount instanceof BankAccount && sendingAccount.getBalance() >= amount){
+        if(sendingAccount instanceof BankAccount && sendingAccount.getBalance() >= amount &&
+                !receivingAccount.getBankNumber().equals(((BankAccount) sendingAccount).getBankNumber())){
             sendingUserTransaction = transaction.makeTransaction(receivingAccount,sendingAccount,amount);
             transactionDatabase.addTransaction(sendingAccount,sendingUserTransaction);
             userDatabase.updateUserBalance(currentUser);
@@ -225,9 +242,12 @@ public class UserAction {
                 transactionDatabase.addTransaction(receivingAccount,receivingUserTransaction);
                 userDatabase.updateUserBalance(recievingUser);
             }
+            else{
+                receivingAccount.getProvider().updateAccountBalance(receivingAccount,amount);
+            }
             userDatabase.updateUserBalance(currentUser);
+            currentUser.getInstaPayAccount().getAccount().setBalance(sendingAccount.getProvider().getAccountBalance(sendingAccount));
             System.out.println("Transferring to bank account succeeded!");
-
         }else{
             System.out.println("Transferring to bank account failed!");
         }
@@ -250,12 +270,15 @@ public class UserAction {
             }
         }
         EwalletAccount receivingAccount = getRecievingEwalletAccount(accountProvider);
+
         Account sendingAccount = currentUser.getInstaPayAccount().getAccount();
         Transaction sendingUserTransaction;
         if(sendingAccount.getBalance() >= amount){
             sendingUserTransaction = transaction.makeTransaction(receivingAccount,sendingAccount,amount);
+
             transactionDatabase.addTransaction(sendingAccount,sendingUserTransaction);
             userDatabase.updateUserBalance(currentUser);
+            currentUser.getInstaPayAccount().getAccount().setBalance(sendingAccount.getProvider().getAccountBalance(sendingAccount));
             User recievingUser = userDatabase.isRegisteredAccount(receivingAccount);
             if(recievingUser != null){
                 Transaction receivingUserTransaction = sendingUserTransaction;
@@ -263,9 +286,7 @@ public class UserAction {
                 transactionDatabase.addTransaction(receivingAccount,receivingUserTransaction);
                 userDatabase.updateUserBalance(recievingUser);
             }
-            userDatabase.updateUserBalance(currentUser);
             System.out.println("Transferring to ewallet account succeeded!");
-
         }else{
             System.out.println("Transferring to ewallet account failed!");
         }
@@ -287,6 +308,7 @@ public class UserAction {
                 transactionDatabase.addTransaction(receivingAccount,receivingUserTransaction);
 
                 userDatabase.updateUserBalance(currentUser);
+                currentUser.getInstaPayAccount().getAccount().setBalance(sendingAccount.getProvider().getAccountBalance(sendingAccount));
                 userDatabase.updateUserBalance(recievingUser);
                 System.out.println("Transferring to instapay account succeeded!");
 
@@ -297,18 +319,17 @@ public class UserAction {
             System.out.println("Transferring to instapay account failed!");
         }
     }
-
     public void payGasBill(){
-//        billPayment.setBillType(new GasBillPayment);
-//        billPayment.payBill();
+        billPayment = new GasBillPayment();
+        billPayment.billOptions(currentUser);
     }
     public void payWaterBill(){
-//        billPayment.setBillType(new WaterBillPayment);
-//        billPayment.payBill();
+        billPayment = new WaterBillPayment();
+        billPayment.billOptions(currentUser);
     }
     public void payElectricityBill(){
-//        billPayment.setBillType(new ElectricityBillPayment);
-//        billPayment.payBill();
+        billPayment = new ElectricityBillPayment();
+        billPayment.billOptions(currentUser);
     }
     public void runSignUser(){
         while(true){
@@ -322,7 +343,7 @@ public class UserAction {
                             break;
                         }
                         case 2:{
-                            authentication.setSignUp(new WalletSignUp());
+                            authentication.setSignUp(new WalletSignUp(new OTPManager()));
                             break;
                         }
                     }
@@ -347,8 +368,9 @@ public class UserAction {
     }
 
     public void runApplication() {
-        displayUser();
+
         while (true){
+            displayUser();
             int choice = displayUserMenu();
             switch (choice){
                 case 1:{
@@ -376,6 +398,10 @@ public class UserAction {
                     break;
                 }
                 case 7:{
+                    runSignUser();
+                    break;
+                }
+                case 8:{
                     System.out.println("Thank you for using our application!");
                     exit(0);
                     break;
@@ -385,13 +411,11 @@ public class UserAction {
     }
 
     public static void main(String[] args) {
+        BankAccountProvider p1 = new BankAccountProvider();
+        EwalletAccountProvider p2 = new EwalletAccountProvider();
+        p1.fillAccounts();
+        p2.fillAccounts();
         UserAction userAction = new UserAction();
-        User user = new User();
-        user.setUserName("Rawanyounis");
-        user.setInstaPayAccount(new InstaPayAccount(new BankAccount(new CIBBank())));
-        user.getInstaPayAccount().getAccount().setBalance(344.6);
-        userAction.setCurrentUser(user);
-        userAction.runApplication();
-//        userAction.transferToBankAccount();
+        userAction.runSignUser();
     }
 }

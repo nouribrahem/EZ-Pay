@@ -1,5 +1,4 @@
 package Authentication.SignUp;
-import Accounts.Account;
 import Accounts.InstaPayAccount;
 
 import DataBase.UserDatabase;
@@ -36,8 +35,8 @@ public abstract class SignUp {
                 System.out.println("Valid password");
                 user.setPassword(password);
                 //TODO the account attribute has be correctly set
-                user.setInstaPayAccountaccount(instapayAccount);
-//                UserAction.displayUser();
+                user.setInstaPayAccount(instapayAccount);
+//                userDatabase.addUser(user);
                 return true;
             }
             else{

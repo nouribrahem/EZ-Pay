@@ -2,50 +2,37 @@ package Accounts.Providers;
 
 import Accounts.Account;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class AccountProvider {
-    protected List<Account> registeredAccounts;
+
+
+
+
+    public abstract Account search(Account account);
     public abstract void fillAccounts();
-    public Boolean verifyAccount(Account account){
-        return registeredAccounts.contains(account);
-    }
-    public  Double getAccountBalance(Account account){
-        if(verifyAccount(account)){
-            Account target = registeredAccounts.get(registeredAccounts.indexOf(account));
-            return target.getBalance();
-        }
-        else{
-            return null;
-        }
-    }
-    public Boolean updateAccountBalance(Account account,double amount) {
-        if(verifyAccount(account)){
-            Account target = registeredAccounts.get(registeredAccounts.indexOf(account));
-            target.setBalance(target.getBalance()+amount);
+    public  Boolean verifyAccount(Account account) {
+        if(search(account)!=null){
             return true;
         }
-        //simple update in list
-        //might need account tho to search the list for it
         return false;
     }
-    public boolean hasSufficientBalance(Account account, double transactionAmount){
-        if(verifyAccount(account)){
-            Account target = registeredAccounts.get(registeredAccounts.indexOf(account));
-            return target.getBalance() >= transactionAmount;
+    public  Double getAccountBalance(Account account){
+        Account a = search(account);
+        if (a != null){
+            return a.getBalance();
         }
-        return false;
+        return null;
     }
+    public abstract Boolean updateAccountBalance(Account account,double amount);
+    public abstract boolean hasSufficientBalance(Account account, double transactionAmount);
 
-    public Boolean updateAccountBalance(double amount) {
-        //simple update in list
-        //might need account tho to search the list for it
-        return true;
-    }
-    public double getBalance(){
-        //search list for the account
-        //then get its balance
-        //this method will be called after update account balance to ensure it's updated
-        return 1.2;
-    }
+
+//    public double getBalance(Account account){
+//        //search list for the account
+//        //then get its balance
+//        //this method will be called after update account balance to ensure it's updated
+//        return 1.2;
+//    }
 }
