@@ -3,20 +3,14 @@ package Authentication.SignUp;
 import Accounts.BankAccount;
 import Accounts.InstaPayAccount;
 import Accounts.Providers.*;
-import Authentication.*;
-
 import java.util.Scanner;
 
-import static java.lang.Character.isDigit;
 
 public class BankSignUp extends SignUp {
     public BankSignUp() {
         super(new OTPManager());
     }
-
-    //    public User getUgetSignupUser() {}
     public boolean createAccount() {
-        //TODO(add input to create type of provider)
         Scanner in = new Scanner(System.in);
         BankAccountProvider bankProvider = null;
         int choice;
@@ -60,29 +54,24 @@ public class BankSignUp extends SignUp {
         }
         account.setBankNumber(bankNumber);
 
-
-
         boolean verify = account.getProvider().verifyAccount(account);
         System.out.println(verify);
         if (verify) {
             otp.sendOTP(number);
             System.out.println("Please enter the otp number.");
             String OTPNumber = in.next();
-            while (!otp.verifyOTP(OTPNumber)) {
-                System.out.println("The OTP number you have entered is not correct, try again.");
-                OTPNumber = in.next();
+            if (!otp.verifyOTP(OTPNumber)) {
+                System.out.println("The OTP number you have entered is not correct.");
+                return false;
             }
             account.setBalance(account.getProvider().getAccountBalance(account));
-
             this.instapayAccount = new InstaPayAccount(account);
-
-
             System.out.println("The bank created successfully");
             return true;
         } else {
             System.out.println("The bank cannot be verified");
+            return false;
         }
-        return false;
     }
 
     public InstaPayAccount getAccount() {
