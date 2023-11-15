@@ -4,6 +4,9 @@ import Accounts.Account;
 import Accounts.BankAccount;
 import Accounts.EwalletAccount;
 import Accounts.Providers.*;
+import Authentication.SignUp.BankSignUp;
+import Authentication.SignUp.WalletSignUp;
+import Bills.BillPayment;
 import DataBase.*;
 import Authentication.*;
 import Transaction.*;
@@ -11,17 +14,21 @@ import Transaction.*;
 import java.security.Provider;
 import java.util.Scanner;
 
+import static java.lang.System.exit;
+
 public class UserAction {
     private User currentUser;
     private UserDatabase userDatabase;
     private TransactionDatabase transactionDatabase;
     private Authentication authentication;
+    private BillPayment billPayment;
     private Transaction transaction;
     {
         transaction = new Transaction();
         authentication = new Authentication();
         userDatabase = new UserDatabase();
         transactionDatabase = new TransactionDatabase();
+        billPayment = new BillPayment();
     }
     Scanner scanner = new Scanner(System.in);
     public int displaySignMenu(){
@@ -45,15 +52,16 @@ public class UserAction {
             4. Pay gas bill.
             5. Pay electricity bill.
             6. Pay water Bill.
+            7. exit.
             """);
 
             choice = scanner.nextInt();
 
-            if (choice <= 0 || choice >= 7) {
-                System.out.println("Please enter a valid input 1 through 6!");
+            if (choice <= 0 || choice > 7) {
+                System.out.println("Please enter a valid input 1 through 7!");
             }
 
-        } while (choice <= 0 || choice >= 7);
+        } while (choice <= 0 || choice > 7);
 
         return choice;
     }
@@ -161,21 +169,25 @@ public class UserAction {
         return username;
     }
 
-    private void signIn(){
+    private boolean signIn(){
         String username,password;
         username = inputUsername();
         password = inputPassword();
         if (authentication.signIn(username,password)){
             currentUser = authentication.getSigninUser();
+            return true;
         }else{
-            System.out.println("Failed to sign in!");
+            System.out.println("Failed to sign In!");
+            return false;
         }
     }
-    private void signUp(){
+    private boolean signUp(){
         if(authentication.signUp()){
             currentUser = authentication.getSigninUser();
+            return true;
         }else{
             System.out.println("Failed to sign up!");
+            return false;
         }
     }
     void transferToBankAccount(){
@@ -271,8 +283,90 @@ public class UserAction {
         }
     }
 
+    public void payGasBill(){
+//        billPayment.setBillType(new GasBillPayment);
+//        billPayment.payBill();
+    }
+    public void payWaterBill(){
+//        billPayment.setBillType(new WaterBillPayment);
+//        billPayment.payBill();
+    }
+    public void payElectricityBill(){
+//        billPayment.setBillType(new ElectricityBillPayment);
+//        billPayment.payBill();
+    }
+    public void runSignUser(){
+        while(true){
+            int signingChoice = displaySignMenu();
+            switch (signingChoice){
+                case 1:{
+                    int signUpChoice = displaySignUpMenu();
+                    switch (signUpChoice){
+                        case 1:{
+                            authentication.setSignUp(new BankSignUp());
+                            break;
+                        }
+                        case 2:{
+                            authentication.setSignUp(new WalletSignUp());
+                            break;
+                        }
+                    }
+                    if(signUp()){
+                        runApplication();
+                    }
+                    break;
+                }
+                case 2:{
+                    if(signIn()){
+                        runApplication();
+                    }
+                    break;
+                }
+                default: {
+                    System.out.println("Thank you for using our application!");
+                    exit(0);
+                    break;
+                }
+            }
+        }
+    }
 
-
+    public void runApplication() {
+        while (true){
+            int choice = displayUserMenu();
+            switch (choice){
+                case 1:{
+                    transferToBankAccount();
+                    break;
+                }
+                case 2:{
+                    transferToEWalletAccount();
+                    break;
+                }
+                case 3:{
+                    transferToInstapayAccount();
+                    break;
+                }
+                case 4:{
+                    payGasBill();
+                    break;
+                }
+                case 5:{
+                    payElectricityBill();
+                    break;
+                }
+                case 6:{
+                    payWaterBill();
+                    break;
+                }
+                case 7:{
+                    System.out.println("Thank you for using our application!");
+                    exit(0);
+                    break;
+                }
+            }
+        }
+    }
 
     public static void main(String[] args) {
         UserAction userAction = new UserAction();

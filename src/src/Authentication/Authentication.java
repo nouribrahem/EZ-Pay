@@ -1,4 +1,5 @@
 package Authentication;
+import Authentication.SignUp.BankSignUp;
 import Authentication.SignUp.SignUp;
 
 import DataBase.UserDatabase;
@@ -36,4 +37,7 @@ public class Authentication {
         return user;
     }
 
+    public void setSignUp(SignUp signUp) {
+        this.signUp = signUp;
+    }
 }

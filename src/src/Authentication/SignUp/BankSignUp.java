@@ -9,9 +9,9 @@ import java.util.Scanner;
 
 import static java.lang.Character.isDigit;
 
-public abstract class BankSignUp extends SignUp{
-    public BankSignUp(OTPManager otp) {
-        super(otp);
+public class BankSignUp extends SignUp{
+    public BankSignUp() {
+        super(new OTPManager());
     }
 
     public boolean createAccount(){
